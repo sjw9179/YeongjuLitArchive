@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YeongjuLitArchive</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+KR:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="background-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+      <header class="header">
+        <h1 class="logo">YeongjuLitArchive</h1>
+        <p class="subtitle">문학 구조 및 감정 분석 엔진</p>
+      </header>
+
+      <section class="input-section glass-panel">
+        <div class="input-header">
+          <h2>작품 입력</h2>
+          <p>분석할 시나 소설의 일부분을 입력해주세요. (연/문단 구분 권장)</p>
+        </div>
+
+        <div class="transform-container">
+          <textarea
+            id="litInput"
+            placeholder="이곳에 문학 작품을 붙여넣으세요...&#10;&#10;예시:&#10;나 보기가 역겨워&#10;가실 때에는&#10;말없이 고이 보내 드리우리다.&#10;&#10;영변에 약산&#10;진달래꽃&#10;아름 따다 가실 길에 뿌리우리다."
+          ></textarea>
+          <div id="litResultOverlay" class="result-overlay hidden">
+            <!-- Interactive Text Will Appear Here -->
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button id="resetBtn" class="cta-button secondary hidden">
+            <span>다시 쓰기</span>
+          </button>
+          <button id="analyzeBtn" class="cta-button">
+            <span>분석 시작하기</span>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="resultSection" class="result-section hidden">
+        <div class="analysis-grid">
+          <!-- Additional Info / Graph (Bottom or Side) -->
+          <!-- We'll keep the Graph here -->
+          <div class="card glass-panel graph-card">
+            <h3>감정 흐름 그래프</h3>
+            <div class="skeleton skeleton-chart"></div>
+            <div class="chart-container">
+              <canvas id="emotionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Analysis Notes Panel (Right Side of the Split View usually, but here stacked) -->
+          <!-- The Interactive Text is above (in input section). This is the detailed breakdown. -->
+          <div class="card glass-panel summary-card">
+            <h3>분석 요약</h3>
+
+            <div class="skeleton-group">
+              <div class="skeleton skeleton-line" style="width: 80%"></div>
+              <div class="skeleton skeleton-line" style="width: 65%"></div>
+              <div class="skeleton skeleton-line" style="width: 90%"></div>
+              <div class="skeleton skeleton-block"></div>
+            </div>
+
+            <div id="overallSummary" class="overall-summary"></div>
+
+            <div class="deep-insight">
+              <h4>핵심 표현 요약</h4>
+              <ul id="keyPhraseList"></ul>
+            </div>
+
+            <div class="deep-insight">
+              <h4>표현 해설</h4>
+              <ul id="highlightList"></ul>
+            </div>
+
+            <div class="deep-insight">
+              <h4>분석 근거 요약</h4>
+              <ul id="evidenceList"></ul>
+            </div>
+
+            <!-- Hidden legacy containers -->
+            <div id="summaryText" class="hidden"></div>
+            <div id="keywordsList" class="hidden"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
