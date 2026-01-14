@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".container").classList.add("analysis-mode"); // Trigger Split View
 
     try {
-      const prompt = buildAnalysisPrompt(text);
-      const aiText = await requestGroqAnalysis(prompt);
+      const aiText = await requestGroqAnalysis(text);
       const analysis = parseJsonStrict(aiText);
       currentAnalysis = analysis;
 
@@ -97,27 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function requestGroqAnalysis(fullprompt) {
-    const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-    const apiKey = await getGroqApiKey();
+    const API_URL = "https://cloudapi.juwon21.kr/p/epfZbpdWgiTYqaRhH71F7/ai_api?apiKey=ea8808b0b80e1d5ad8b8aa1b5bf52b707ac45a2085015095";
 
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-oss-120b",
-        temperature: 0,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a literary analysis engine. Return JSON only. No markdown, no extra text.",
-          },
-          { role: "user", content: fullprompt },
-        ],
+       text: fullprompt
       }),
     });
 
@@ -130,70 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return data.choices?.[0]?.message?.content?.trim() || "";
   }
 
-  function buildAnalysisPrompt(text) {
-    return `
-당신은 문학 작품 분석 엔진입니다.
-반드시 JSON만 출력하십시오. 설명, 마크다운, 코드 블록을 포함하지 마십시오.
-응답은 아래 스키마를 정확히 따르십시오.
-
-{
-  "meta": {
-    "title": "작품명",
-    "genre": "갈래",
-    "form": "형식",
-    "pov": "시점/화자",
-    "style": "운율 또는 문체",
-    "themes": ["주제1", "주제2"]
-  },
-  "overall": {
-    "coreEmotion": "핵심 정서 (한 단어)",
-    "speakerAttitude": "화자의 태도",
-    "oneLineSummary": "한 문장 요약"
-  },
-  "emotionFlow": [
-    {
-      "unitIndex": 1,
-      "unitText": "연/문단 원문",
-      "emotion": "정서 이름",
-      "score": 0,
-      "evidence": "이 정서 판단의 근거가 되는 구체 표현"
-    }
-  ],
-  "highlights": [
-    {
-      "text": "원문 중 강조할 정확한 문자열",
-      "function": "해당 표현의 문학적 기능 설명",
-      "type": "유형 (예: 심상, 상징, 반복법, 정서 강화)"
-    }
-  ],
-  "keyPhrases": [
-    {
-      "text": "핵심 표현",
-      "meaning": "문학적 의미 설명"
-    }
-  ],
-  "devices": [
-    {
-      "name": "표현 기법 이름",
-      "description": "기법의 효과/의미"
-    }
-  ],
-  "motifs": [
-    {
-      "text": "모티프/이미지",
-      "meaning": "의미/역할"
-    }
-  ]
-}
-
-하이라이트는 가능한 많이 추출하십시오. 한 작품에서 최소 10개 이상을 목표로 하고,
-단어 단위가 아니라 구체적인 구절을 포함해 더 세밀하게 지정하십시오.
-정서 흐름은 연/문단 단위로 반드시 나누고, 근거 표현을 직접 인용하십시오.
-
-분석 대상 텍스트:
-${text}
-`;
-  }
 
   function setLoadingState(isLoading) {
     if (!container) return;
@@ -297,6 +221,7 @@ ${text}
       });
     });
   }
+
 
   function renderEmotionChart(emotionFlow) {
     const flow = Array.isArray(emotionFlow) ? emotionFlow : [];
