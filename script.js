@@ -79,21 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoadingState(false);
   });
 
-  async function getGroqApiKey() {
-    if (window.GROQ_API_KEY) return window.GROQ_API_KEY;
 
-    const response = await fetch("key", { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error("API 키 파일을 불러올 수 없습니다.");
-    }
-
-    const key = (await response.text()).trim();
-    if (!key) {
-      throw new Error("API 키가 비어 있습니다.");
-    }
-
-    return key;
-  }
 
   async function requestGroqAnalysis(fullprompt) {
     const API_URL = "https://cloudapi.juwon21.kr/p/epfZbpdWgiTYqaRhH71F7/ai_api?apiKey=ea8808b0b80e1d5ad8b8aa1b5bf52b707ac45a2085015095";
@@ -101,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        Authorization: `${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -412,3 +397,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 });
+
